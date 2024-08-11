@@ -5,18 +5,44 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Destiny</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        #loading-bar-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            background-color: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-  
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+        #loading-bar {
+            width: 0;
+            height: 30px;
+            background-color: #4CAF50;
+        }
+
+        #loading-text {
+            margin-top: 10px;
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
 </head>
 
 <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <div id="loading-bar-container">
+        <div id="loading-bar"></div>
+    </div>
+    <div id="loading-text">Loading...</div>
     <canvas id="unity-canvas" tabindex="-1"
-        style="width: 100vw; height: 100vh; background: #231F20"></canvas>
+        style="width: 100vw; height: 100vh; display: none; background: #231F20"></canvas>
     <script src="Build/WebGL Builds.loader.js"></script>
     <script>
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            // Mobile device style: fill the whole browser client area with the game canvas:
             var meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -38,13 +64,17 @@
             companyName: "Revoid",
             productName: "Destiny",
             productVersion: "0.1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      }).then((unityInstance) => {
-        console.log('Instance created',window.Telegram.WebApp);
-                window.unityInstance = unityInstance;
-                //window.unityInstance.SendMessage("TelegramController", "SetWebAppUser", JSON.stringify(window.Telegram.WebApp.initDataUnsafe.user));
-            });
+        }).then((unityInstance) => {
+            document.getElementById("loading-bar-container").style.display = "none";
+            document.getElementById("loading-text").style.display = "none";
+            document.getElementById("unity-canvas").style.display = "block";
+            window.unityInstance = unityInstance;
+            //window.unityInstance.SendMessage("TelegramController", "SetWebAppUser", JSON.stringify(window.Telegram.WebApp.initDataUnsafe.user));
+        }).progress((progress) => {
+            var progressPercent = Math.round(progress * 100);
+            document.getElementById("loading-bar").style.width = progressPercent + "%";
+            document.getElementById("loading-text").textContent = "Loading... " + progressPercent + "%";
+        });
     </script>
 
 <!--
