@@ -33,12 +33,13 @@ jobs:
         if: github.ref == 'refs/heads/staging'
         run: |
           mkdir -p public/staging
-          mv * public/staging
+          mv !(public) public/staging
 
       - name: Prepare content for main
         if: github.ref == 'refs/heads/main'
         run: |
-          mv * public
+          mkdir -p public
+          mv !(public) public
 
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v3
