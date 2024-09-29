@@ -3,8 +3,9 @@ name: Deploy static content to Pages
 on:
   push:
     branches:
-      - "main"
-      - "staging"
+      - main
+      - staging  # Deploy from both main and staging branches
+
   workflow_dispatch:
 
 permissions:
@@ -13,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: ${{ github.ref }}
+  group: "pages"
   cancel-in-progress: false
 
 jobs:
@@ -22,29 +23,19 @@ jobs:
       name: ${{ github.ref == 'refs/heads/main' && 'github-pages' || 'staging-pages' }}
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Prepare content for staging
-        if: github.ref == 'refs/heads/staging'
-        run: |
-          mkdir -p public/staging
-          find . -mindepth 1 -maxdepth 1 ! -name public -exec mv {} public/staging/ \;
-
-      - name: Prepare content for main
-        if: github.ref == 'refs/heads/main'
-        run: |
-          mkdir -p public
-          find . -mindepth 1 -maxdepth 1 ! -name public -exec mv {} public/ \;
-
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'public'
+          # Upload entire repository except .github and other unnecessary files
+          path: '.'
 
       - name: Deploy to GitHub Pages
         id: deployment
