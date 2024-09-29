@@ -29,18 +29,19 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact for production or staging
+      - name: Prepare content for staging
         if: github.ref == 'refs/heads/staging'
         run: |
           mkdir -p public/staging
           mv * public/staging
-        with:
-          path: 'public'
 
-      - name: Upload artifact for main
+      - name: Prepare content for main
         if: github.ref == 'refs/heads/main'
         run: |
           mv * public
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-pages-artifact@v3
         with:
           path: 'public'
 
