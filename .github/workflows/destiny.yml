@@ -33,13 +33,13 @@ jobs:
         if: github.ref == 'refs/heads/staging'
         run: |
           mkdir -p public/staging
-          mv !(public) public/staging
+          find . -mindepth 1 -maxdepth 1 ! -name public -exec mv {} public/staging/ \;
 
       - name: Prepare content for main
         if: github.ref == 'refs/heads/main'
         run: |
           mkdir -p public
-          mv !(public) public
+          find . -mindepth 1 -maxdepth 1 ! -name public -exec mv {} public/ \;
 
       - name: Upload artifact for deployment
         uses: actions/upload-pages-artifact@v3
