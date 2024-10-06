@@ -127,9 +127,12 @@
 
         window.ReturnToVeebud = function () {
           const gameBotLink = `https://t.me/veebud_bot?start=webapp`;
-          window.open(gameBotLink, "_blank");
+          if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.openTelegramLink) {
+            Telegram.WebApp.openTelegramLink(gameBotLink);
+          } else {
+            window.location.href = gameBotLink;
+          }
         };
-
       }
       initializeUnityInstance();
     </script>
