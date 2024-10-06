@@ -127,27 +127,9 @@
 
         window.ReturnToVeebud = function () {
           console.log("Returning to Veebud");
-          if (window.Telegram && Telegram.WebApp) {
-            Telegram.WebApp.openTelegramLink("https://t.me/veebud_bot/VEEBUD");
-          } else {
-            console.log("Telegram WebApp API не доступен");
-            window.location.href = "https://t.me/veebud_bot/VEEBUD";
-          }
+          Telegram.WebApp.openTelegramLink("https://t.me/veebud_bot/VEEBUD");
         };
 
-        const returnButton = document.createElement("button");
-        returnButton.id = "return-to-veebud";
-        returnButton.innerText = "Return to Veebud";
-        returnButton.style.display = "none";
-        returnButton.onclick = function () {
-          window.location.href = "https://t.me/veebud_bot/VEEBUD";
-        };
-        document.body.appendChild(returnButton);
-
-        window.ReturnToVeebud = function () {
-          console.log("Showing Return button to Veebud");
-          returnButton.style.display = "block";
-        };
       }
       initializeUnityInstance();
     </script>
