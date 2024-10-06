@@ -127,10 +127,10 @@
 
         window.ReturnToVeebud = function () {
           if (window.Telegram && Telegram.WebApp) {
-            Telegram.WebApp.openTelegramLink("https://t.me/veebud_bot?start=return");
+            Telegram.WebApp.openTelegramLink("https://t.me/veebud_bot/VEEBUD");
           } else {
             console.log("Telegram WebApp API не доступен");
-            window.location.href = "https://t.me/veebud_bot?start=return";
+            window.location.href = "https://t.me/veebud_bot/VEEBUD";
           };
         };
       }
